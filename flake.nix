@@ -2,12 +2,11 @@
   description = "app flake";
   
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
   };
   
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, flake-utils }: flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
@@ -16,12 +15,15 @@
         devShell = pkgs.mkShell rec {
           name = "app";
           buildInputs = [
-            pkgs.qt6.full
+            pkgs.qt5.qtbase
+            pkgs.qt5.qtwayland
             pkgs.qtcreator
             (pkgs.python310.withPackages
               (pythonPkgs: [
-                pythonPkgs.django
+                pythonPkgs.sqlalchemy
                 pythonPkgs.pyside2
+                pythonPkgs.pyside2-tools
+                pythonPkgs.python-lsp-server
               ])
             )
           ];
