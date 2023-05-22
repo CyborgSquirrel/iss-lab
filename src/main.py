@@ -13,7 +13,7 @@ import domain
 import repo
 
 
-windows = []
+controllers = []
 
 
 def main():
@@ -52,13 +52,13 @@ def main():
     
     app = PySide2.QtWidgets.QApplication(sys.argv)
 
-    window = WindowLogIn(srv_application)
-    windows.append(window)
-    window.show()
+    controller = ControllerLogIn(srv_application)
+    controllers.append(controller)
+    controller.show()
     app.exec_()
 
 
-class WindowLogIn(PySide2.QtWidgets.QMainWindow, gen.log_in.Ui_MainWindow):
+class ControllerLogIn(PySide2.QtWidgets.QMainWindow, gen.log_in.Ui_MainWindow):
     def __init__(self, srv_application: srv.SrvApplication):
         self.srv_application = srv_application
         super(type(self), self).__init__()
@@ -82,19 +82,19 @@ class WindowLogIn(PySide2.QtWidgets.QMainWindow, gen.log_in.Ui_MainWindow):
             return
 
         if isinstance(membru_echipaj, domain.Impostor):
-            window = WindowImpostorMain(self.srv_application, membru_echipaj)
-            windows.append(window)
-            window.show()
+            controller = ControllerImpostorMain(self.srv_application, membru_echipaj)
+            controllers.append(controller)
+            controller.show()
             return
 
         if isinstance(membru_echipaj, domain.Coechipier):
-            window = WindowCoechipierMain(self.srv_application, membru_echipaj)
-            windows.append(window)
-            window.show()
+            controller = ControllerCoechipierMain(self.srv_application, membru_echipaj)
+            controllers.append(controller)
+            controller.show()
             return
 
 
-class WindowCoechipierMain(PySide2.QtWidgets.QMainWindow, gen.coechipier_main.Ui_MainWindow):
+class ControllerCoechipierMain(PySide2.QtWidgets.QMainWindow, gen.coechipier_main.Ui_MainWindow):
     def __init__(self, srv_application: srv.SrvApplication, coechipier: domain.Coechipier):
         self.srv_application = srv_application
         super(type(self), self).__init__()
@@ -147,7 +147,7 @@ class WindowCoechipierMain(PySide2.QtWidgets.QMainWindow, gen.coechipier_main.Ui
             message_box.exec_()
 
 
-class WindowImpostorMain(PySide2.QtWidgets.QMainWindow, gen.impostor_main.Ui_MainWindow):
+class ControllerImpostorMain(PySide2.QtWidgets.QMainWindow, gen.impostor_main.Ui_MainWindow):
     def __init__(self, srv_application: srv.SrvApplication, impostor: domain.Impostor):
         self.srv_application = srv_application
         super(type(self), self).__init__()
